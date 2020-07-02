@@ -25,6 +25,7 @@ using namespace std;
 
 bool test1() {
 	int w = 4;//!!!размер нижнего ящика
+	int W = 4;//!!ПЛОЩАДЬ ОСНОВАНИЯ
 	int h = 2;
 	BigBox bigBox(w);
 	MediumBox mediumBox(w/2);
@@ -34,9 +35,9 @@ bool test1() {
 	int _w = w; 
 	for (int i = 0; i < h; i++) {
 		Level* level = new Level;
-		int b = w / bigBox.w;
-		int m = (w%4) / mediumBox.w;
-		int s = (w % smallBox.w);
+		int b = W / bigBox.w;
+		int m = (W - b*bigBox.w) / mediumBox.w;
+		int s = (W - b * bigBox.w - m*mediumBox.w)/ smallBox.w;
 		level->set(b,m,s);
 		levels.add(*level);
 	}
@@ -47,7 +48,8 @@ bool test1() {
 }
 
 bool test2() {
-	int w = 8;//!!!размер нижнего ящика
+	int w = 4;//!!!размер нижнего ящика
+	int W = 5;//!!ПЛОЩАДЬ ОСНОВАНИЯ
 	int h = 2;
 	BigBox bigBox(w);
 	MediumBox mediumBox(w / 2);
@@ -57,14 +59,38 @@ bool test2() {
 	int _w = w;
 	for (int i = 0; i < h; i++) {
 		Level* level = new Level;
-		int b = w / bigBox.w;
-		int m = (w % 4) / mediumBox.w;
-		int s = (w % smallBox.w);
+		int b = W / bigBox.w;
+		int m = (W - b * bigBox.w) / mediumBox.w;
+		int s = (W - b * bigBox.w - m * mediumBox.w) / smallBox.w;
 		level->set(b, m, s);
 		levels.add(*level);
 	}
-	if ((levels[0].b != 1 || levels[0].m != 0 || levels[0].m != 0) &&
-		levels[1].b != 1 || levels[1].m != 0 || levels[1].s != 0)
+	if ((levels[0].b != 1 || levels[0].m != 0 || levels[0].m != 1) &&
+		levels[1].b != 1 || levels[1].m != 0 || levels[1].s != 1)
+		return false;
+	return true;
+}
+
+bool test3() {
+	int w = 4;//!!!размер нижнего ящика
+	int W = 6;//!!ПЛОЩАДЬ ОСНОВАНИЯ
+	int h = 2;
+	BigBox bigBox(w);
+	MediumBox mediumBox(w / 2);
+	SmallBox smallBox(w / 4);
+
+	Storage <Level> levels;
+	int _w = w;
+	for (int i = 0; i < h; i++) {
+		Level* level = new Level;
+		int b = W / bigBox.w;
+		int m = (W - b * bigBox.w) / mediumBox.w;
+		int s = (W - b * bigBox.w - m * mediumBox.w) / smallBox.w;
+		level->set(b, m, s);
+		levels.add(*level);
+	}
+	if ((levels[0].b != 1 || levels[0].m != 1 || levels[0].m != 0) &&
+		levels[1].b != 1 || levels[1].m != 1 || levels[1].s != 0)
 		return false;
 	return true;
 }
@@ -78,7 +104,7 @@ int main(int argc, char* argv[])
 
 	cout << ((test1()) ? "Pass" : "Fail") << endl;
 	cout << ((test2()) ? "Pass" : "Fail") << endl;
-	//cout << ((test3()) ? "Pass" : "Fail") << endl;
+	cout << ((test3()) ? "Pass" : "Fail") << endl;
 	/*if (argc > 1) {
 		fstream fa(argv[1], ios::in);
 		fstream fb(argv[2], ios::in);
